@@ -1,0 +1,30 @@
+---
+- hosts: all
+  become: yes
+  name: Prep all servers
+  roles:
+    - rhel_register_node
+    - ocp_configure_node
+  vars:
+    - node_type: master
+    - docker_device: xvdb
+    - min_cpus:
+        master: 1
+        infra: 1
+        compute: 1
+    - min_memory:
+        master: 0.5
+        infra: 0.5
+        compute: 0.5
+    - min_storage:
+        master: 5
+        infra: 5
+        compute: 5
+  
+- import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+---
+- name: ocp_configure_node
+  src: https://github.com/prometeo-cloud/ocp_configure_node
+  
+- name: rhel_register_node
+  src: https://github.com/prometeo-cloud/rhel_register_node
