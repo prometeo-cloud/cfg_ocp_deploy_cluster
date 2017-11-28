@@ -1,38 +1,73 @@
-Role Name
-=========
+# cfg_ocp_deploy_cluster
 
-A brief description of the role goes here.
+## Description:
 
-Requirements
-------------
+This playbook deploys a customer OCP cluster
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Behaviour:
 
-Role Variables
---------------
+**Feature:** Deploy OCP cluster
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+As a PaaS Operator I want to deploy a full OCP cluster for customer usage
 
-Dependencies
-------------
+- **Scenario:** OCP Cluster is fully deployed
+- **Given:** at least one RHEL7 master node
+- **Given:** at least one RHEL7 infra node
+- **Given:** at least one RHEL7 compute node
+- **Given:** a correctly configured inventory file
+- **When:** the playbook is executed
+- **Then:** nodes are checked to ensure pre-configuration is correct
+- **Then:** the cluster is deployed
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+## Dependencies:
 
-Example Playbook
-----------------
+The playbook uses the ocp_configure_node and rhel_register_node roles. These need to be loaded by running:
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```
+$ ansible-galaxy install -r requirements.yml --force
+```
+prior to running the playbook.
 
-    - hosts: servers
-      roles:
-         - { role: ocp_deploy_cluster, x: 42 }
+## Configuration:
 
-License
--------
+A list of the external variables used by the playbook.
 
-BSD
+| Variable  | Description  | Example  | Where set |
+|---|---|---|---|
+| **redhat_username*  | A valid Red Hat portal usernam  |  myuser | vars/secrets.yml |
+| **redhat_password**  | Red Hat portal password  |  myuserpassword | vars/secrets.yml |
+| **redhat_subscription_poolid**  | Pool ID for an OCP subscription | 908adcef098098 | vars/secrets.yml |
+| **min_cpu**  | List of minimum cpu requirements, by node_type | (defaults in  ocp_configure_node role)  | override in group_vars/all.yml if needed |
+| **min_storage** | List of minimum storage requirements, by node_type | (defaults in ocp_configure_node role)  | override in group_vars/all.yml if needed |
+| **min_memory** | List of minimum memory requirements, by node_type | (defaults in ocp_configure_node role)  | override in group_vars/all.yml if needed |
+| **docker_device** | Device to use as docker storage | (defaults in ocp_configure_node role) | override in group_vars/all.yml if needed |
 
-Author Information
-------------------
+## Inventory:
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+The inventory file (inventory/inventory.yml) is broadly similar to a standard OCP inventory file. The only differences is that there is a new group called 'compute'.
+The existing group 'nodes' is a superset of the 'masters' and 'compute' groups.
+
+N.B For testing purposes, the installer resource checks are disabled (openshift_disable_check in the inventory).
+
+## Authentication:
+
+Basic authentication is configured at deployment. This requires an htpasswd file with a password for the admin user in the 'templates/' directory.
+
+## Testing:
+
+Testing is currently carried out on AWS servers. To test, do the following:
+
+1. Create four t2.large VMs, each with an additional 10GB of EBS storage for use as docker storage.
+2. Designate one node as master, one as infra, and the other two as compute.
+3. Configure a security group so that all nodes can talk to each other, and are externally accessible via ssh.
+4. Configure a security group for the master permitting external access on 8443.
+5. Configure a security group for the infra node permitting external access on 80 and 443.
+6. Update the inventory as required.
+7. Create an htpasswd file for the admin password and save it in templates (htpasswd -c templates/htpasswd admin)
+8. Ensure that vars/secrets.yaml contains your Red Hat portal credentials and a poolid.
+
+## Usage:
+
+```
+$ ansible-galaxy install -r requirements.yml --force
+$ ansible-playbook playbook.yml --key-file <path_to_AWS_key>

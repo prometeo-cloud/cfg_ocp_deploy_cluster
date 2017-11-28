@@ -1,0 +1,19 @@
+---
+# Storage values in GB
+min_storage:
+  master: 5
+  infra: 5
+  compute: 5
+
+# Memory values in GB
+min_memory:
+  master: 0.5
+  infra: 0.5
+  compute: 0.5
+
+min_cpus:
+  master: 1
+  infra: 1
+  compute: 1
+
+docker_device: xvdb
