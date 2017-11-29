@@ -1,4 +1,6 @@
 ---
+# these vars are set here for testing purposes on AWS
+
 # Storage values in GB
 min_storage:
   master: 5
