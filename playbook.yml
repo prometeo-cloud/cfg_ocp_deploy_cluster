@@ -21,8 +21,14 @@
     - ocp_configure_node
   vars:
     - node_type: compute
-  
-
+    
+  hosts: glusterfs
+  become: yes
+  name: Prep glusterfs nodes
+  roles:
+    - ocp_configure_node
+  vars:
+    - node_type: glusterfs
   
 - import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
 

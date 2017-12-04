@@ -86,10 +86,10 @@ infra1.example.com openshift_node_labels="{'infra': 'true', 'zone': 'default'}" 
 compute1.example.com openshift_node_labels="{'node': 'true', 'zone': 'default'}" openshift_schedulable=True
 compute2.com openshift_node_labels="{'node': 'true', 'zone': 'default'}" openshift_schedulable=True
 
-#[glusterfs]
-#infra1.example.com  glusterfs_devices='[ "/dev/vdb", "/dev/vdc", "/dev/vdd" ]'
-#compute1.example.com  glusterfs_devices='[ "/dev/vdb", "/dev/vdc", "/dev/vdd" ]'
-#compute2.example.com  glusterfs_devices='[ "/dev/vdb", "/dev/vdc", "/dev/vdd" ]'
+[glusterfs]
+infra1.example.com  glusterfs_devices='[ "/dev/xvdc" ]'
+compute1.example.com  glusterfs_devices='[ "/dev/xvdc" ]'
+compute2.example.com  glusterfs_devices='[ "/dev/xvdc" ]'
 
 [nodes:children]
 masters
