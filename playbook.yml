@@ -22,7 +22,7 @@
   vars:
     - node_type: compute
     
-  hosts: glusterfs
+- hosts: glusterfs
   become: yes
   name: Prep glusterfs nodes
   roles:
