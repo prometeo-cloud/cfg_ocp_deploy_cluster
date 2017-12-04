@@ -21,6 +21,18 @@ As a PaaS Operator I want to deploy a full OCP cluster for customer usage
 
 ## Dependencies:
 
+RPMS:
+- ansible.x86_64.2.4.1.0-1.el7
+- java-1.8.0-openjdk-headless.x86_64.1:1.8.0.151-1.b12.el7_4
+- python-passlib.noarch.1.6.5-2.el7
+- httpd-tools.x86_64 0:2.4.6-67.el7_4.6                                                                                                                                                                                                g
+
+Checkout the ansible installer into the same directory as the cfg_ocp_deploy_cluster checkout:
+```
+$ git clone https://github.com/openshift/openshift-ansible
+$ pushd openshift-ansible ; git checkout -b release-3.6 origin/release-3.6 ; popd
+
+
 The playbook uses the ocp_configure_node and rhel_register_node roles. These need to be loaded by running:
 
 ```
@@ -34,7 +46,7 @@ A list of the external variables used by the playbook.
 
 | Variable  | Description  | Example  | Where set |
 |---|---|---|---|
-| **redhat_username*  | A valid Red Hat portal usernam  |  myuser | vars/secrets.yml |
+| **redhat_username**  | A valid Red Hat portal usernam  |  myuser | vars/secrets.yml |
 | **redhat_password**  | Red Hat portal password  |  myuserpassword | vars/secrets.yml |
 | **redhat_subscription_poolid**  | Pool ID for an OCP subscription | 908adcef098098 | vars/secrets.yml |
 | **min_cpu**  | List of minimum cpu requirements, by node_type | (defaults in  ocp_configure_node role)  | override in group_vars/all.yml if needed |
