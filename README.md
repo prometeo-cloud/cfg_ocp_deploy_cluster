@@ -25,7 +25,7 @@ RPMS:
 - ansible.x86_64.2.4.1.0-1.el7
 - java-1.8.0-openjdk-headless.x86_64.1:1.8.0.151-1.b12.el7_4
 - python-passlib.noarch.1.6.5-2.el7
- httpd-tools.x86_64 0:2.4.6-67.el7_4.6                                                                                                                                                               
+- httpd-tools.x86_64 0:2.4.6-67.el7_4.6                                                                                                                                                               
 
 Checkout the ansible installer into the same directory as the cfg_ocp_deploy_cluster checkout:
 ```
