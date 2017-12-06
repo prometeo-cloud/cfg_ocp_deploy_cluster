@@ -75,8 +75,9 @@ Testing is currently carried out on AWS servers. To test, do the following:
 4. Configure a security group for the master permitting external access on 8443.
 5. Configure a security group for the infra node permitting external access on 80 and 443.
 6. Update the inventory as required.
-7. Create an htpasswd file for the admin password and save it in templates (htpasswd -c templates/htpasswd admin)
-8. Ensure that vars/secrets.yaml contains your Red Hat portal credentials and a poolid.
+7. Edit inventory/group_vars/all.yml to override minimum cpu, storage etc limits, and set docker and gluster device names. An example is provided. 
+8. Create an htpasswd file for the admin password and save it in templates (htpasswd -c templates/htpasswd admin)
+9. Ensure that vars/secrets.yaml contains your Red Hat portal credentials and a poolid.
 
 ## Usage:
 
