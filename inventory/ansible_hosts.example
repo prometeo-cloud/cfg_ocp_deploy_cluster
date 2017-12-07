@@ -1,0 +1,49 @@
+# This is an example of a bring your own (byo) host inventory for a cluster
+# with natively hosted, containerized GlusterFS storage for applications. It
+# will also autmatically create a StorageClass for this purpose.
+#
+# This inventory may be used with the byo/config.yml playbook to deploy a new
+# cluster with GlusterFS storage.
+#
+# This inventory may also be used with byo/openshift-glusterfs/config.yml to
+# deploy GlusterFS storage on an existing cluster.
+#
+# There are additional configuration parameters that can be specified to
+# control the deployment and state of a GlusterFS cluster. Please see the
+# documentation in playbooks/byo/openshift-glusterfs/README.md and
+# roles/openshift_storage_glusterfs/README.md for additional details.
+
+# Specify the glusterfs group, which contains the nodes that will host
+# GlusterFS storage pods. At a minimum, each node must have a
+# "glusterfs_devices" variable defined. This variable is a list of block
+# devices the node will have access to that is intended solely for use as
+# GlusterFS storage. These block devices must be bare (e.g. have no data, not
+# be marked as LVM PVs), and will be formatted.
+
+[OSEv3:children]
+masters
+nodes
+glusterfs
+
+[masters]
+master.example.com
+
+[etcd]
+master.example.com
+
+[infra]
+infra.example.com
+
+[compute]
+node1.example.com
+node2.example.com
+
+[glusterfs]
+infra.example.com glusterfs_devices='[ "/dev/xvdc" ]'
+node1.example.com glusterfs_devices='[ "/dev/xvdc" ]'
+node2.example.com glusterfs_devices='[ "/dev/xvdc" ]'
+
+[nodes:children]
+masters
+compute
+infra
