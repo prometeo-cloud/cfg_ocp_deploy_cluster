@@ -39,9 +39,9 @@ node1.example.com
 node2.example.com
 
 [glusterfs]
-infra.example.com glusterfs_devices='[ "/dev/xvdc" ]'
-node1.example.com glusterfs_devices='[ "/dev/xvdc" ]'
-node2.example.com glusterfs_devices='[ "/dev/xvdc" ]'
+infra.example.com
+node1.example.com
+node2.example.com
 
 [nodes:children]
 masters
