@@ -7,7 +7,7 @@
   roles:
     - rhel_register_node
 
-- hosts: !glusterfs
+- hosts: all:!glusterfs
   strategy: free
   become: yes
   name: Prep all nodes
