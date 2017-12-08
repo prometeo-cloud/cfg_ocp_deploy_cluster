@@ -36,7 +36,7 @@ $ pushd openshift-ansible ; git checkout -b release-3.6 origin/release-3.6 ; pop
 The playbook uses the ocp_configure_node and rhel_register_node roles. These need to be loaded by running:
 
 ```
-$ ansible-galaxy install -r requirements.yml --force
+$ ansible-galaxy install -r roles/requirements.yml --force
 ```
 prior to running the playbook.
 
