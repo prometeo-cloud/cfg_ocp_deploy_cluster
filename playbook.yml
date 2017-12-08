@@ -1,36 +1,38 @@
 ---
 
 - hosts: all
+  strategy: free
   become: yes
   name: Register all servers
   roles:
     - rhel_register_node
 
-- hosts: masters
+- hosts: !glusterfs
+  strategy: free
   become: yes
-  name: Prep masters
+  name: Prep all nodes
   roles:
     - ocp_configure_node
-  vars:
-    - node_type: master
 
-- hosts: compute
-  become: yes
-  name: Prep compute nodes
-  roles:
-    - ocp_configure_node
-  vars:
-    - node_type: compute
-    
 - hosts: glusterfs
+  strategy: free
   become: yes
-  name: Prep glusterfs nodes
+  name: Prep glusterfs nodes (override node_type)
   roles:
     - ocp_configure_node
-  vars:
-    - node_type: glusterfs
   
 - import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
+
+- hosts: masters[0]
+  become: yes
+  name: Add automator service account
+  roles:
+    - ocp_create_master_service_account
+  vars:
+    - sa_name: automator
+    - cluster_role: cluster-admin
+    - project: openshift-infra
+
 
 
 

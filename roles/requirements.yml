@@ -4,3 +4,7 @@
   
 - name: rhel_register_node
   src: https://github.com/prometeo-cloud/rhel_register_node
+
+- name: ocp_create_master_service_account
+  src: https://github.com/prometeo-cloud/ocp_create_master_service_account.git
+

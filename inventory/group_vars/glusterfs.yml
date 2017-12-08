@@ -1,2 +1,3 @@
 ---
 glusterfs_devices: '[ "/dev/xvdc" ]'
+node_type: gluster
