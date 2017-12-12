@@ -24,4 +24,5 @@ min_cpus:
 docker_device: xvdb
 gluster_device: xvdc
 min_gluster_storage: 5
+nagios_server_hostname: nagios.example.com
 
