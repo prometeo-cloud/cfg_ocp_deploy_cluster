@@ -26,22 +26,32 @@ nodes
 glusterfs
 
 [masters]
-master.example.com
+master1.example.com
+master2.example.com
+master3.example.com
 
 [etcd]
-master.example.com
+master1.example.com
+master2.example.com
+master3.example.com
 
 [infra]
-infra.example.com
+infra1.example.com openshift_node_labels="{'infra': 'true', 'zone': '1'}"
+infra2.example.com openshift_node_labels="{'infra': 'true', 'zone': '2'}"
+infra3.example.com openshift_node_labels="{'infra': 'true', 'zone': '3'}"
 
 [compute]
-node1.example.com
-node2.example.com
+node1.example.com openshift_node_labels="{'node': 'true', 'zone': '1'}"
+node2.example.com openshift_node_labels="{'node': 'true', 'zone': '2'}"
+node3.example.com openshift_node_labels="{'node': 'true', 'zone': '3'}"
 
 [glusterfs]
-infra.example.com
+infra1.example.com
+infra2.example.com
+infra3.example.com
 node1.example.com
 node2.example.com
+node3.example.com
 
 [nodes:children]
 masters

@@ -1,4 +1,2 @@
 ---
-openshift_node_labels: "{'infra': 'true', 'zone': 'default'}"
-openshift_schedulable: "True"
 node_type: master

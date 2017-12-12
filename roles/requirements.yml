@@ -8,3 +8,8 @@
 - name: ocp_create_master_service_account
   src: https://github.com/prometeo-cloud/ocp_create_master_service_account.git
 
+- name: nagios_install_client
+  src: https://github.com/prometeo-cloud/nagios_install_client.git
+
+- name: nagios_register_client
+  src: https://github.com/prometeo-cloud/nagios_register_client.git

@@ -22,8 +22,21 @@
     - ocp_configure_node
   vars:
     - node_type: glusterfs
+
+- hosts: all
+  strategy: free
+  name: Install Nagios client
+  roles:
+    - nagios_install_client
+
   
 - import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
+
+- hosts: masters[0]
+  become: yes
+  tasks:
+  - name: Give cluster-admin to admin user
+    shell: oc adm policy add-cluster-role-to-user cluster-admin admin
 
 - hosts: masters[0]
   become: yes
@@ -35,8 +48,20 @@
     - cluster_role: cluster-admin
     - project: openshift-infra
 
+- hosts: all
+  strategy: free
+  name: Install Nagios client
+  roles:
+    - nagios_install_client
 
-
+- hosts: all
+  strategy: free
+  name: Register Nagios client with server
+  roles:
+    - nagios_register_client
+  vars:
+    - nagios_client_hostname: "{{ ansible_hostname }}"
+    - nagios_clientip_address: "{{ ansible_all_ipv4_addresses[0] }}"
 
 
 
