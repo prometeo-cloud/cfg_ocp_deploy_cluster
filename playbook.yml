@@ -23,13 +23,6 @@
   vars:
     - node_type: glusterfs
 
-- hosts: all
-  strategy: free
-  name: Install Nagios client
-  roles:
-    - nagios_install_client
-
-  
 - import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
 
 - import_playbook: "../openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml"
