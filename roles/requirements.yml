@@ -16,3 +16,6 @@
 
 - name: ocp_configure_gluster
   src: https://github.com/prometeo-cloud/ocp_configure_gluster.git
+
+- name: ocp_skin_cluster
+  src: https://github.com/prometeo-cloud/ocp_skin_cluster.git

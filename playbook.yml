@@ -25,6 +25,11 @@
 
 - import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
 
+- hosts: masters
+  name: customise (skin) console
+  roles:
+    - ocp_skin_cluster
+
 - hosts: masters[0]
   name: config default storage class
   roles:
