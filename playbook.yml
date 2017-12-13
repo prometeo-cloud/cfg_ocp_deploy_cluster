@@ -32,11 +32,21 @@
   
 - import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
 
+- import_playbook: "../openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml"
+
 - hosts: masters[0]
   become: yes
   tasks:
-  - name: Give cluster-admin to admin user
-    shell: oc adm policy add-cluster-role-to-user cluster-admin admin
+  - name: Give cluster-admin to admin user (will replace with role eventually)
+    shell: >
+      PATH=$PATH:/usr/local/bin oc adm policy add-cluster-role-to-user cluster-admin admin
+
+- hosts: masters[0]
+  name: config default storage class
+  roles:
+    - ocp_configure_gluster
+  vars:
+    - storageclass: glusterfs-storage
 
 - hosts: masters[0]
   become: yes
@@ -62,7 +72,3 @@
   vars:
     - nagios_client_hostname: "{{ ansible_hostname }}"
     - nagios_clientip_address: "{{ ansible_all_ipv4_addresses[0] }}"
-
-
-
-
