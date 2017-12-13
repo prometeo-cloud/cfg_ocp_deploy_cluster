@@ -13,3 +13,6 @@
 
 - name: nagios_register_client
   src: https://github.com/prometeo-cloud/nagios_register_client.git
+
+- name: ocp_configure_gluster
+  src: https://github.com/prometeo-cloud/ocp_configure_gluster.git
