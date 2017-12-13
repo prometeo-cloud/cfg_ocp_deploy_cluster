@@ -25,6 +25,13 @@
 
 - import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
 
+- hosts: masters[0]
+  name: config default storage class
+  roles:
+    - ocp_configure_gluster
+  vars:
+    - storageclass: glusterfs-storage
+
 - import_playbook: "../openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml"
 
 - hosts: masters[0]
@@ -34,12 +41,7 @@
     shell: >
       PATH=$PATH:/usr/local/bin oc adm policy add-cluster-role-to-user cluster-admin admin
 
-- hosts: masters[0]
-  name: config default storage class
-  roles:
-    - ocp_configure_gluster
-  vars:
-    - storageclass: glusterfs-storage
+
 
 - hosts: masters[0]
   become: yes
