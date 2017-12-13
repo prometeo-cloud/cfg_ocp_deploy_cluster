@@ -51,17 +51,17 @@
     - cluster_role: cluster-admin
     - project: openshift-infra
 
-- hosts: all
-  strategy: free
-  name: Install Nagios client
-  roles:
-    - nagios_install_client
+#- hosts: all
+#  strategy: free
+#  name: Install Nagios client
+#  roles:
+#    - nagios_install_client
 
-- hosts: all
-  strategy: free
-  name: Register Nagios client with server
-  roles:
-    - nagios_register_client
-  vars:
-    - nagios_client_hostname: "{{ ansible_hostname }}"
-    - nagios_clientip_address: "{{ ansible_all_ipv4_addresses[0] }}"
+#- hosts: all
+#  strategy: free
+#  name: Register Nagios client with server
+#  roles:
+#    - nagios_register_client
+#  vars:
+#    - nagios_client_hostname: "{{ ansible_hostname }}"
+#    - nagios_clientip_address: "{{ ansible_all_ipv4_addresses[0] }}"
