@@ -64,12 +64,12 @@
   roles:
     - nagios_install_client
 
-- hosts: all
-  strategy: free
-  name: Register Nagios client with server
-  roles:
-    - nagios_register_client
-  vars:
-    - nagios_client_hostname: "{{ ansible_hostname }}"
-    - nagios_clientip_address: "{{ ansible_all_ipv4_addresses[0] }}"
-    - task_type: Register
+#- hosts: all
+#  strategy: free
+#  name: Register Nagios client with server
+#  roles:
+#    - nagios_register_client
+#  vars:
+#    - nagios_client_hostname: "{{ ansible_hostname }}"
+#    - nagios_clientip_address: "{{ ansible_all_ipv4_addresses[0] }}"
+#    - task_type: Register
