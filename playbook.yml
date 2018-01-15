@@ -77,10 +77,3 @@
         task_type: 'Register'
       delegate_to: "{{ nagios_server_hostname }}"
 
-  roles:
-    - nagios_register_client
-  vars:
-    nagios_client_hostname: "{{ inventory_hostname }}"
-    nagios_clientip_address: "{{ ansible_host }}"
-    task_type: 'Register'
-  delegate_to: "{{ nagios_server_hostname }}"
