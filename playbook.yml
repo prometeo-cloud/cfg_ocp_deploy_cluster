@@ -56,18 +56,15 @@
   roles:
     - ocp_skin_cluster
 
-#- hosts: all
-#  strategy: free
-#  name: Install Nagios client
-#  roles:
-#    - nagios_install_client
-
-#- hosts: all
-#  strategy: free
-#  name: Register Nagios client with server
-#  roles:
-#    - nagios_register_client
-#  vars:
-#    - nagios_client_hostname: "{{ ansible_hostname }}"
-#    - nagios_clientip_address: "{{ ansible_all_ipv4_addresses[0] }}"
-#    - task_type: Register
+- name: Register a client on Nagios server
+  hosts: all
+  become: yes
+  tasks:
+    - name: Register/Unregister a Nagios Client
+      include_role:
+        name: nagios_register_client
+      vars:
+        nagios_client_hostname: "{{ inventory_hostname }}"
+        nagios_clientip_address: "{{ ansible_host }}"
+        task_type: 'Register'
+      delegate_to: "{{ nagios_server_hostname }}"
