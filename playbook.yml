@@ -23,16 +23,16 @@
 #  vars:
 #    - node_type: glusterfs
 
-- import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
+#- import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
 
-- hosts: masters[0]
-  name: config default storage class
-  roles:
-    - ocp_configure_gluster
-  vars:
-    - storageclass: glusterfs-storage
+#- hosts: masters[0]
+#  name: config default storage class
+#  roles:
+#    - ocp_configure_gluster
+#  vars:
+#    - storageclass: glusterfs-storage
 
-- import_playbook: "../openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml"
+#- import_playbook: "../openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml"
 
 - hosts: masters[0]
   become: yes
