@@ -12,7 +12,7 @@
 #  become: yes
 #  name: Prep all nodes
 #  roles:
-    - ocp_configure_node
+#    - ocp_configure_node
 
 #- hosts: glusterfs
 #  strategy: free
