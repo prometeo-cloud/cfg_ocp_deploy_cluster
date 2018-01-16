@@ -1,60 +1,60 @@
 ---
 
-#- hosts: all
-#  strategy: free
-#  become: yes
-#  name: Register all servers
-#  roles:
-#    - rhel_register_node
+- hosts: all
+  strategy: free
+  become: yes
+  name: Register all servers
+  roles:
+    - rhel_register_node
 
-#- hosts: all:!glusterfs
-#  strategy: free
-#  become: yes
-#  name: Prep all nodes
-#  roles:
-#    - ocp_configure_node
+- hosts: all:!glusterfs
+  strategy: free
+  become: yes
+  name: Prep all nodes
+  roles:
+    - ocp_configure_node
 
-#- hosts: glusterfs
-#  strategy: free
-#  become: yes
-#  name: Prep glusterfs nodes (override node_type as some glusterfs nodes might also be infra/compute)
-#  roles:
-#    - ocp_configure_node
-#  vars:
-#    - node_type: glusterfs
+- hosts: glusterfs
+  strategy: free
+  become: yes
+  name: Prep glusterfs nodes (override node_type as some glusterfs nodes might also be infra/compute)
+  roles:
+    - ocp_configure_node
+  vars:
+    - node_type: glusterfs
 
-#- import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
+- import_playbook: "../openshift-ansible/playbooks/byo/config.yml"
 
-#- hosts: masters[0]
-#  name: config default storage class
-#  roles:
-#    - ocp_configure_gluster
-#  vars:
-#    - storageclass: glusterfs-storage
+- hosts: masters[0]
+  name: config default storage class
+  roles:
+    - ocp_configure_gluster
+  vars:
+    - storageclass: glusterfs-storage
 
-#- import_playbook: "../openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml"
+- import_playbook: "../openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml"
 
-#- hosts: masters[0]
-#  become: yes
-#  tasks:
-#  - name: Give cluster-admin to admin user (will replace with role eventually)
-#    shell: >
-#      PATH=$PATH:/usr/local/bin oc adm policy add-cluster-role-to-user cluster-admin admin
+- hosts: masters[0]
+  become: yes
+  tasks:
+  - name: Give cluster-admin to admin user (will replace with role eventually)
+    shell: >
+      PATH=$PATH:/usr/local/bin oc adm policy add-cluster-role-to-user cluster-admin admin
 
-#- hosts: masters[0]
-#  become: yes
-#  name: Add automator service account
-#  roles:
-#    - ocp_create_master_service_account
-#  vars:
-#    - sa_name: automator
-#    - cluster_role: cluster-admin
-#    - project: openshift-infra
+- hosts: masters[0]
+  become: yes
+  name: Add automator service account
+  roles:
+    - ocp_create_master_service_account
+  vars:
+    - sa_name: automator
+    - cluster_role: cluster-admin
+    - project: openshift-infra
 
-#- hosts: masters
-#  name: customise (skin) console
-#  roles:
-#    - ocp_skin_cluster
+- hosts: masters
+  name: customise (skin) console
+  roles:
+    - ocp_skin_cluster
 
 - name: Install Nagios Client
   hosts: all
