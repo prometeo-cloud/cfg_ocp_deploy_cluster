@@ -34,34 +34,34 @@
 
 #- import_playbook: "../openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml"
 
-- hosts: masters[0]
-  become: yes
-  tasks:
-  - name: Give cluster-admin to admin user (will replace with role eventually)
-    shell: >
-      PATH=$PATH:/usr/local/bin oc adm policy add-cluster-role-to-user cluster-admin admin
+#- hosts: masters[0]
+#  become: yes
+#  tasks:
+#  - name: Give cluster-admin to admin user (will replace with role eventually)
+#    shell: >
+#      PATH=$PATH:/usr/local/bin oc adm policy add-cluster-role-to-user cluster-admin admin
 
-- hosts: masters[0]
-  become: yes
-  name: Add automator service account
-  roles:
-    - ocp_create_master_service_account
-  vars:
-    - sa_name: automator
-    - cluster_role: cluster-admin
-    - project: openshift-infra
+#- hosts: masters[0]
+#  become: yes
+#  name: Add automator service account
+#  roles:
+#    - ocp_create_master_service_account
+#  vars:
+#    - sa_name: automator
+#    - cluster_role: cluster-admin
+#    - project: openshift-infra
 
-- hosts: masters
-  name: customise (skin) console
-  roles:
-    - ocp_skin_cluster
+#- hosts: masters
+#  name: customise (skin) console
+#  roles:
+#    - ocp_skin_cluster
 
 - name: Install Nagios Client
   hosts: all
   become: yes
   roles:
     - nagios_install_client
-  
+
 - name: Register a client on Nagios server
   hosts: all
   become: yes
