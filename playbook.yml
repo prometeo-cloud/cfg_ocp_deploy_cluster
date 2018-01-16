@@ -61,9 +61,7 @@
   become: yes
   roles:
     - nagios_install_client
-  vars:
-    nagios_server_hostname: "{{ nagios_server_hostname }}"
-
+  
 - name: Register a client on Nagios server
   hosts: all
   become: yes
