@@ -1,5 +1,12 @@
 ---
 
+- hosts: all:!glusterfs
+  strategy: free
+  become: yes
+  name: Prep all nodes
+  roles:
+    - ocp_configure_node
+
 - hosts: glusterfs
   strategy: free
   become: yes
@@ -8,3 +15,4 @@
     - ocp_configure_node
   vars:
     - node_type: glusterfs
+    
