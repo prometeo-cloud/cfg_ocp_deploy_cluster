@@ -1,0 +1,7 @@
+---
+
+- hosts: masters
+  name: customise (skin) console
+  roles:
+    - ocp_skin_cluster
+

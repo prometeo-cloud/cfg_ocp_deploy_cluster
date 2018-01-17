@@ -1,0 +1,8 @@
+---
+
+- hosts: all:!glusterfs
+  strategy: free
+  become: yes
+  name: Prep all nodes
+  roles:
+    - ocp_configure_node

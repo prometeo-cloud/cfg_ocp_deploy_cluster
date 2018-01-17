@@ -1,0 +1,8 @@
+---
+
+- hosts: all
+  strategy: free
+  become: yes
+  name: Register all servers
+  roles:
+    - rhel_register_node

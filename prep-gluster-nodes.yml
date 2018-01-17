@@ -1,0 +1,10 @@
+---
+
+- hosts: glusterfs
+  strategy: free
+  become: yes
+  name: Prep glusterfs nodes (override node_type as some glusterfs nodes might also be infra/compute)
+  roles:
+    - ocp_configure_node
+  vars:
+    - node_type: glusterfs
