@@ -49,4 +49,4 @@
   git:
     repo: "https://github.com/openshift/openshift-ansible.git"
     dest: "/usr/share/ansible"
-    version: "release-{{ ocp_version }}"
+    version: "{{ ocp_version }}"

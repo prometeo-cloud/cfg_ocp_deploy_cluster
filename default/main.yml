@@ -1,6 +1,6 @@
 ---
 # which release version of OCP to use?
-ocp_version: 3.9
+ocp_version: openshift-ansible-3.9.32-1
 
 cloud_provider: aws
 
