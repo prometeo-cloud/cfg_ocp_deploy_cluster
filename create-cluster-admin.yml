@@ -1,8 +1,0 @@
----
-
-- hosts: masters[0]
-  become: yes
-  tasks:
-  - name: Give cluster-admin to admin user (will replace with role eventually)
-    shell: >
-      PATH=$PATH:/usr/local/bin oc adm policy add-cluster-role-to-user cluster-admin admin

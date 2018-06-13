@@ -1,8 +1,0 @@
----
-
-- hosts: masters[0]
-  name: config default storage class
-  roles:
-    - ocp_configure_gluster
-  vars:
-    - storageclass: glusterfs-storage

@@ -1,0 +1,8 @@
+---
+- name: Remove all RedHat subscriptions
+  hosts: all
+  become: true
+  tasks:
+  - name: Remove all subscriptions
+    redhat_subscription:
+      state: absent

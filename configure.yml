@@ -1,0 +1,43 @@
+---
+- name: Setting {{ storageclass }} as the default storageclass
+  shell: >
+    PATH=$PATH:/usr/local/bin oc patch storageclass {{ storageclass }} -p '{"metadata": {"annotations": {"storageclass.kubernetes.io/is-default-class": "true"}}}'
+
+- hosts: masters[0]
+  become: yes
+  tasks:
+  - name: Making the admin user a cluster-admin (will replace with role eventually)
+    shell: >
+      PATH=$PATH:/usr/local/bin oc adm policy add-cluster-role-to-user cluster-admin admin
+
+  - name: Adding automator service account
+    roles:
+      - ocp_create_master_service_account
+    vars:
+      - sa_name: automator
+      - cluster_role: cluster-admin
+      - project: openshift-infra
+
+- name: Customising the console skin
+  hosts: masters
+  roles:
+    - ocp_skin_cluster
+  when: apply_skin == True
+
+- name: Configuring Nagios
+  hosts: all
+  become: yes
+  roles:
+    - nagios_install_client
+  when: nagios == True
+
+  tasks:
+    - name: Registering Nagios Client
+      include_role:
+        name: nagios_register_client
+      vars:
+        nagios_client_hostname: "{{ inventory_hostname }}"
+        nagios_clientip_address: "{{ ansible_host }}"
+        task_type: 'Register'
+      delegate_to: "{{ nagios_server_hostname }}"
+      when: nagios == True

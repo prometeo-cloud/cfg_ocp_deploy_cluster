@@ -1,0 +1,14 @@
+---
+# which release version of OCP to use?
+ocp_version: 3.9
+
+cloud_provider: aws
+
+# the default storage class to be set as part of post-install configuration.
+storageclass: glusterfs-storage
+
+# determines if branding is applied to OCP as part of post-install configuration.
+apply_skin: False
+
+# determines if a nagios client is installed on the OCP nodes and registered with the server.
+nagios: False

@@ -1,0 +1,10 @@
+---
+- name: Updating the master nodes with a specified ID provider bind password
+  hosts: masters[0]
+  become: true
+  tasks:
+  - name: Updating bindPassword in config file
+    lineinfile:
+      path: /etc/origin/master/master-config.yaml
+      regexp: '      bindPassword: .*'
+      line: '      bindPassword: {{ bind_pwd }}'

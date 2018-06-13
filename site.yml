@@ -1,0 +1,9 @@
+---
+# run the preparation tasks
+- import: prepare.yml
+
+# run the installation tasks
+- import_playbook: "/usr/share/ansible/openshift-ansible/playbooks/byo/config.yml"
+
+# run post configuration tasks
+- import: configure.yml

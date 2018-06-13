@@ -10,7 +10,7 @@ This playbook deploys a customer OCP cluster
 
 As a PaaS Operator I want to deploy a full OCP cluster for customer usage
 
-- **Scenario:** OCP Cluster is fully deployed
+- **Scenario:** Deploys an OCP Cluster
 - **Given:** at least one RHEL7 master node
 - **Given:** at least one RHEL7 infra node
 - **Given:** at least one RHEL7 compute node
@@ -26,12 +26,6 @@ RPMS:
 - java-1.8.0-openjdk-headless.x86_64.1:1.8.0.151-1.b12.el7_4
 - python-passlib.noarch.1.6.5-2.el7
 - httpd-tools.x86_64 0:2.4.6-67.el7_4.6                                                                                                                                                               
-
-Checkout the ansible installer into the same directory as the cfg_ocp_deploy_cluster checkout:
-```
-$ git clone https://github.com/openshift/openshift-ansible
-$ pushd openshift-ansible ; git checkout -b release-3.6 origin/release-3.6 ; popd
-```
 
 The playbook uses the ocp_configure_node and rhel_register_node roles. These need to be loaded by running:
 
