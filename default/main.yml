@@ -2,8 +2,6 @@
 # which release version of OCP to use?
 ocp_version: openshift-ansible-3.9.32-1
 
-cloud_provider: aws
-
 # the default storage class to be set as part of post-install configuration.
 storageclass: glusterfs-storage
 

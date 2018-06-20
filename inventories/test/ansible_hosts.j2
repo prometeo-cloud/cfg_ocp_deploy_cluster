@@ -1,0 +1,62 @@
+# This is an example of a bring your own (byo) host inventory for a cluster
+# with natively hosted, containerized GlusterFS storage for applications. It
+# will also autmatically create a StorageClass for this purpose.
+#
+# This inventory may be used with the byo/config.yml playbook to deploy a new
+# cluster with GlusterFS storage.
+#
+# This inventory may also be used with byo/openshift-glusterfs/config.yml to
+# deploy GlusterFS storage on an existing cluster.
+#
+# There are additional configuration parameters that can be specified to
+# control the deployment and state of a GlusterFS cluster. Please see the
+# documentation in playbooks/byo/openshift-glusterfs/README.md and
+# roles/openshift_storage_glusterfs/README.md for additional details.
+
+# Specify the glusterfs group, which contains the nodes that will host
+# GlusterFS storage pods. At a minimum, each node must have a
+# "glusterfs_devices" variable defined. This variable is a list of block
+# devices the node will have access to that is intended solely for use as
+# GlusterFS storage. These block devices must be bare (e.g. have no data, not
+# be marked as LVM PVs), and will be formatted.
+
+[OSEv3:children]
+masters
+nodes
+glusterfs
+
+[masters]
+master1 ansible_host=ocp{{instance}}master01.{{domain}}
+master2 ansible_host=ocp{{instance}}master02.{{domain}}
+master3 ansible_host=ocp{{instance}}master03.{{domain}}
+
+[etcd]
+ocp{{instance}}master01.{{domain}}
+ocp{{instance}}master02.{{domain}}
+ocp{{instance}}master03.{{domain}}
+
+[infra]
+infra1 ansible_host=ocp{{instance}}infra01.{{domain}} openshift_node_labels="{'region': 'infra', 'zone': '{{zonea}}'}"
+infra2 ansible_host=ocp{{instance}}infra02.{{domain}} openshift_node_labels="{'region': 'infra', 'zone': '{{zoneb}}'}"
+infra3 ansible_host=ocp{{instance}}infra03.{{domain}} openshift_node_labels="{'region': 'infra', 'zone': '{{zonec}}'}"
+
+[compute]
+compute1 ansible_host=ocp{{instance}}compute01.{{domain}} openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': '{{zonea}}'}"
+compute2 ansible_host=ocp{{instance}}compute02.{{domain}} openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': '{{zoneb}}'}"
+compute3 ansible_host=ocp{{instance}}compute03.{{domain}} openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': '{{zonec}}'}"
+
+[glusterfs]
+storage1 ansible_host=ocp{{instance}}storage01.{{domain}} openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': '{{zonea}}'}"
+storage2 ansible_host=ocp{{instance}}storage02.{{domain}} openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': '{{zoneb}}'}"
+storage3 ansible_host=ocp{{instance}}storage03.{{domain}} openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': '{{zonec}}'}"
+
+[glusterfs_registry]
+ocp{{instance}}infra01.{{domain}}
+ocp{{instance}}infra02.{{domain}}
+ocp{{instance}}infra03.{{domain}}
+
+[nodes:children]
+masters
+compute
+infra
+storage

@@ -1,0 +1,41 @@
+---
+# version of the openshift-ansible installer to use
+ocp_version: openshift-ansible-3.9.32-1
+
+# version of the docker daemnon install on the nodes
+docker_version: 1.13.1
+
+repos_to_enable:
+  - rhel-7-server-rpms
+  - rhel-7-server-extras-rpms
+  - rhel-7-server-ose-3.9-rpms
+  - rhel-7-fast-datapath-rpms
+
+gluster_repos:
+  - rh-gluster-3-for-rhel-7-server-rpms
+  - rh-gluster-3-client-for-rhel-7-server-rpms
+
+# Storage values in GB
+min_storage:
+  master: 5
+  infra: 5
+  compute: 5
+  glusterfs: 5
+
+# Memory values in GB
+min_memory:
+  master: 0.5
+  infra: 0.5
+  compute: 0.5
+  glusterfs: 0.5
+
+min_cpus:
+  master: 1
+  infra: 1
+  compute: 1
+  glusterfs: 1
+
+docker_device: xvdb
+gluster_device: xvde
+min_gluster_storage: 5
+...

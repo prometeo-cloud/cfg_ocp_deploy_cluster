@@ -1,0 +1,6 @@
+---
+openshift_node_labels: "{'node': 'true', 'zone': 'default'}"
+openshift_schedulable: "False"
+node_type: glusterfs
+glusterfs_devices: [ '/dev/xvde' ]
+...
