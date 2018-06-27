@@ -1,0 +1,22 @@
+---
+
+- name: Converge
+  hosts: all
+  roles:
+    - role: ocp_configure_node
+  vars:
+    - node_type: compute
+    - docker_device: vdb
+    - min_cpus:
+        master: 2
+        infra: 2
+        compute: 2
+    - min_memory:
+        master: 1
+        infra: 1
+        compute: 1
+    - min_storage:
+        master: 5
+        infra: 5
+        compute: 5
+

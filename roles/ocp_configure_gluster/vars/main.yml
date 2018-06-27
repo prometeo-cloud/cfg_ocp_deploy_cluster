@@ -1,0 +1,3 @@
+---
+# vars file for ocp_configure_gluster
+storageclass: glusterfs-storage

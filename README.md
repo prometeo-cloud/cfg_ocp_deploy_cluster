@@ -79,3 +79,18 @@ Testing is currently carried out on AWS servers. To test, do the following:
 $ ansible-galaxy install -r requirements.yml --force
 $ ansible-playbook playbook.yml --key-file <path_to_AWS_key>
 ```
+
+
+## Concept
+
+Idea is that if you call default plays it will install minimalistic cluster. No storage, no metrics, no logging. 
+We do so we could avoid big-bang changes. Any other steps (install gluster, metrics, etcd) will contain variable mapping to do so.
+
+When you are confident with your inventory you can run big bang change deployment. But for initial deployments recommendation would be to avoid this.
+
+# TODO:
+
+```
+1. Update project inventory template with new labels
+2. make templating of the inventory in this file too (labels should be templates as they will be dynamic based on where it runs)
+```

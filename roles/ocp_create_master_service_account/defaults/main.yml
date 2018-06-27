@@ -1,0 +1,5 @@
+---
+# defaults file for ocp_create_master_service_account
+sa_name: automator
+cluster_role: cluster-admin
+project: openshift-infra

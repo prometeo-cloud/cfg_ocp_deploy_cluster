@@ -1,6 +1,6 @@
 ---
 # version of the openshift-ansible installer to use
-ocp_version: openshift-ansible-3.9.32-1
+ocp_version: openshift-ansible-3.9.27-1
 
 # version of the docker daemnon install on the nodes
 docker_version: 1.13.1
@@ -35,7 +35,6 @@ min_cpus:
   compute: 1
   glusterfs: 1
 
-docker_device: xvdb
+docker_storage_disk: xvdb
 gluster_device: xvde
 min_gluster_storage: 5
-...

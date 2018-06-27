@@ -1,0 +1,51 @@
+[OSEv3:children]
+masters
+nodes
+glusterfs
+glusterfs_registry
+etcd
+
+
+[masters]
+master0 ansible_host=master-0.devops-enablement14.example.com openshift_node_labels="{'node': 'false', 'region': 'master', 'zone': 'az1'}"
+master1 ansible_host=master-1.devops-enablement14.example.com openshift_node_labels="{'node': 'false', 'region': 'master', 'zone': 'az2'}"
+master2 ansible_host=master-2.devops-enablement14.example.com openshift_node_labels="{'node': 'false', 'region': 'master', 'zone': 'az3'}"
+
+[etcd]
+etcd0 ansible_host=master-0.devops-enablement14.example.com
+etcd1 ansible_host=master-1.devops-enablement14.example.com
+etcd2 ansible_host=master-2.devops-enablement14.example.com
+
+[infra]
+infra0 ansible_host=infra-0.devops-enablement14.example.com openshift_node_labels="{'region': 'infra', 'zone': 'az1'}"
+infra1 ansible_host=infra-1.devops-enablement14.example.com openshift_node_labels="{'region': 'infra', 'zone': 'az2'}"
+infra2 ansible_host=infra-2.devops-enablement14.example.com openshift_node_labels="{'region': 'infra', 'zone': 'az3'}"
+
+[compute]
+compute0 ansible_host=node-0.devops-enablement14.example.com openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': 'az1'}"
+compute1 ansible_host=node-1.devops-enablement14.example.com openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': 'az2'}"
+compute2 ansible_host=node-2.devops-enablement14.example.com openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': 'az3'}"
+
+[glusterfs]
+storage0 ansible_host=cns-0.devops-enablement14.example.com openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': 'az1'}"
+storage1 ansible_host=cns-1.devops-enablement14.example.com openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': 'az2'}"
+storage2 ansible_host=cns-2.devops-enablement14.example.com openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': 'az3'}"
+
+[glusterfs_registry]
+storage3 ansible_host=cns-3.devops-enablement14.example.com openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': 'az1'}"
+storage4 ansible_host=cns-4.devops-enablement14.example.com openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': 'az2'}"
+storage5 ansible_host=cns-5.devops-enablement14.example.com openshift_node_labels="{'node': 'true', 'region': 'primary', 'zone': 'az3'}"
+
+[nodes:children]
+masters
+compute
+infra
+etcd
+glusterfs
+glusterfs_registry
+
+[controller]
+controller1 ansible_host=controller-0.devops-enablement14.example.com
+
+[bastion]
+bastion1 ansible_host=bastion-0.devops-enablement14.example.com

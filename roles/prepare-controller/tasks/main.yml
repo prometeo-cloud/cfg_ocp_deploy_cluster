@@ -1,0 +1,23 @@
+---
+# tasks file for prepare-controller
+
+- name: enable ansible repo
+  shell: subscription-manager repos --enable="rhel-7-server-rpms"  --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-ose-3.9-rpms" --enable="rhel-7-fast-datapath-rpms" --enable="rhel-7-server-ansible-2.4-rpms"
+
+
+- name: install ansible dep
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - "git"
+  - "ansible"
+  - "make"
+  - "java"
+  - "patch"
+  
+- name: Getting the openshift-ansible installer from Github
+  git:
+    repo: "https://github.com/openshift/openshift-ansible.git"
+    dest: "/usr/share/ansible/openshift-ansible"
+    version: "{{ openshift_ansible_version }}"

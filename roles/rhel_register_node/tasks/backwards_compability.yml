@@ -1,0 +1,15 @@
+---
+- name: Backwards compability - redhat_username
+  set_fact:
+    redhat_user: "{{ redhat_username }}"
+  when: redhat_username is defined
+
+- name: Backwards compability - redhat_password
+  set_fact:
+    redhat_pass: "{{ redhat_password }}"
+  when: redhat_password is defined
+
+- name: Backwards compability - redhat_pool_ids
+  set_fact:
+    redhat_pool_ids: "{{ redhat_subscription_poolid }}"
+  when: redhat_subscription_poolid is defined

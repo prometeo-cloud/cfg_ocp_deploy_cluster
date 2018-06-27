@@ -1,0 +1,11 @@
+---
+- name: Install katello-ca-consumer-latest.noarch.rpm
+  become: "True"
+  yum:
+    name: "https://{{ redhat_satellite_fqdn }}/pub/katello-ca-consumer-latest.noarch.rpm"
+
+- name: Insert CA when it exists
+  become: "True"
+  blockinfile:
+    block: "{{ lookup('file', '{{ playbook_dir }}/files/ca.txt') }}"
+    dest: "/etc/rhsm/ca/redhat-uep.pem"

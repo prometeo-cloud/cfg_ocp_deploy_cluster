@@ -1,0 +1,32 @@
+---
+# These tasks are disk specific so won't run in a docker container
+# we conditionally include them in the main playbook
+
+- name: Check docker device present
+  command: grep "{{ docker_device }}$" /proc/partitions
+  register: dev_check
+  changed_when: False
+
+- name: Check gluster device present
+  command: grep "{{ gluster_device }}$" /proc/partitions
+  register: gluster_dev_check
+  changed_when: False
+  when: node_type == "glusterfs"
+
+- name: Ensure parted is installed
+  yum:
+    name: parted
+    state: latest
+
+- name: Check size of docker device using parted
+  parted: device=/dev/{{ docker_device }} unit=GB
+  register: size_check
+  changed_when: False
+  failed_when: size_check.disk.size|int < min_storage[node_type]
+
+- name: Check size of glusterfs device using parted
+  parted: device=/dev/{{ gluster_device }} unit=GB
+  register: gluster_size_check
+  changed_when: False
+  failed_when: gluster_size_check.disk.size|int < min_gluster_storage
+  when: node_type == "glusterfs"

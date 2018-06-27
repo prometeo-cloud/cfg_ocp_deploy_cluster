@@ -1,0 +1,24 @@
+---
+# tasks file for nagios_register_client
+
+- name: Check Operating System
+  fail:
+    msg="You're not running a supported operating system (CentOS or RHEL 7+)"
+  when: ((ansible_os_family != "RedHat") or (ansible_distribution_major_version|int < 7))
+
+- name: Registration of the Client {{ nagios_client_hostname }}
+  template: src=clientHostname.cfg.j2 dest=/etc/nagios/conf.d/{{ nagios_client_hostname }}.cfg
+  when: task_type == "Register"
+
+- name: Unregister the Client {{ nagios_client_hostname }}
+  file:
+    state: absent
+    path: /etc/nagios/conf.d/{{ nagios_client_hostname }}.cfg
+  when: task_type == "Unregister"
+
+- name: Start nagios service
+  service:
+    name: nagios
+    state: restarted
+    enabled: true
+  when: ansible_virtualization_type != "docker"

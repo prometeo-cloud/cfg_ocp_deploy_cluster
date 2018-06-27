@@ -1,0 +1,13 @@
+---
+repos_to_enable:
+  - rhel-7-server-rpms
+  - rhel-7-server-extras-rpms
+  - rhel-7-server-optional-rpms
+
+packages_to_install:
+  - nrpe
+  - nagios-plugins*
+  - xinetd
+  - openssl
+  - firewalld
+...

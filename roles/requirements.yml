@@ -1,21 +1,30 @@
 ---
-- name: ocp_configure_node
-  src: https://github.com/prometeo-cloud/ocp_configure_node
-  
-- name: rhel_register_node
-  src: https://github.com/prometeo-cloud/rhel_register_node
 
-- name: ocp_create_master_service_account
-  src: https://github.com/prometeo-cloud/ocp_create_master_service_account.git
-
-- name: nagios_install_client
-  src: https://github.com/prometeo-cloud/nagios_install_client.git
-
-- name: nagios_register_client
-  src: https://github.com/prometeo-cloud/nagios_register_client.git
-
-- name: ocp_configure_gluster
-  src: https://github.com/prometeo-cloud/ocp_configure_gluster.git
+# TODO: Just commit roles into repo. development will be easier. When role becomes super robust and reusable - split it. 
+#- name: ocp_configure_node
+#  src: https://github.com/prometeo-cloud/ocp_configure_node
+#  
+#- name: rhel_register_node
+#  src: https://github.com/prometeo-cloud/rhel_register_node
+#
+#- name: ocp_create_master_service_account
+#  src: https://github.com/prometeo-cloud/ocp_create_master_service_account.git
+#
+#- name: nagios_install_client
+#  src: https://github.com/prometeo-cloud/nagios_install_client.git
+#
+#- name: nagios_register_client
+#  src: https://github.com/prometeo-cloud/nagios_register_client.git
+#
+#- name: ocp_configure_gluster
+#  src: https://github.com/prometeo-cloud/ocp_configure_gluster.git
 
 #- name: ocp_skin_cluster
 #  src: https://github.com/nstrug/ocp_skin_cluster.git
+
+#- name: docker
+#  src: https://github.com/mjudeikis/ansible-docker.git
+
+# TODO: I have hadcoded key distribution. fix me please... 
+#- name: ssh
+#  src: https://github.com/mjudeikis/ansible-ssh-setup.git

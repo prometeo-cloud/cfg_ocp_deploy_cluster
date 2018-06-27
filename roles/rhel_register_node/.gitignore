@@ -1,0 +1,5 @@
+default/secrets.yml
+vars/secrets.yml
+**/secrets.yml
+molecule/*/.molecule
+**/*.retry

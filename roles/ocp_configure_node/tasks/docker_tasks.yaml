@@ -1,0 +1,15 @@
+---
+# Tasks to setup docker storage and daemon
+- name: Docker storage setup
+  template:
+    src: templates/docker-storage-setup.j2
+    dest: /etc/sysconfig/docker-storage-setup
+
+- name: Configure docker storage
+  command: docker-storage-setup
+
+- name: Enable docker
+  service:
+    name: docker
+    enabled: yes
+    state: started
