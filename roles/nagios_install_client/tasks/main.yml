@@ -1,0 +1,58 @@
+---
+# tasks file for nagios_install_client
+- name: Check Operating System
+  fail:
+    msg="You're not running a supported operating system (CentOS or RHEL 7+)"
+  when: ((ansible_os_family != "RedHat") or (ansible_distribution_major_version|int < 7))
+
+- name: Ensuring subscription-manager is installed
+  yum:
+    name: subscription-manager
+    state: latest
+
+- name: Disabling all repositories
+  command: subscription-manager repos --disable="*"
+
+- name: Enabling only the required repositories
+  command: subscription-manager repos --enable="{{ item }}"
+  with_items: "{{ repos_to_enable }}"
+
+- name: Activate the EPEL repository on RHEL 7.4
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+
+- name: Install NRPE and Common Plugins
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ packages_to_install }}"
+
+- name: Setup NRPE client configuration
+  template: src=templates/nrpe.cfg.j2 dest=/etc/nagios/nrpe.cfg
+
+- name: Adding the entry of NRPE Daemon
+  command: echo "nrpe {{ nrpe_tcp_port }}/tcp NRPE" >> /etc/services
+
+- name: Check if firewalld is in use
+  shell: "which firewall-cmd 2>&1 > /dev/null && firewall-cmd --state ; exit 0"
+  register: firewalldstate
+
+- name: Configuring the Firewall rules
+  when: firewalldstate.stdout | match("running")
+  command: "{{ item }}"
+  with_items:
+    - firewall-cmd --zone=public --add-port={{nrpe_tcp_port}}/tcp --permanent
+    - firewall-cmd --reload
+  ignore_errors: true
+
+- name: Start NRPE Service
+  service:
+    name: nrpe
+    state: started
+    enabled: true
+  when: ansible_virtualization_type != "docker"
+
+- name: Start xinted service
+  action: service name=xinetd state=restarted
+  when: ansible_virtualization_type != "docker"

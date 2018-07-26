@@ -1,0 +1,54 @@
+---
+# tasks file for ocp_configure_node
+
+# ensure we are properly subscribed to the repos
+# repo removal and adding does not look good here.
+#without sat6 im very expensive operation from time point of view. move me somehere else
+- include_tasks: subscription_manager_tasks.yml
+  when: ansible_distribution == "RedHat"
+
+# disable due bug in selinux in newest 7.5 cut. 
+#- name: Update all
+#  yum:
+#    name: '*'
+#    state: latest
+
+# These tasks shouldn't be run when we are testing on Molecule under docker
+# this should not be here
+#- include_tasks: disk_tasks.yml
+#  when: ansible_virtualization_type != "docker"
+
+- name: Ensure selinux packages installed
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - libselinux-python
+    - selinux-policy-targeted
+
+- name: Ensure SElinux is enforcing
+  selinux:
+    policy: targeted
+    state: enforcing
+
+- name: Install base packages required for OCP
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ packages_to_install }}"
+
+- name: start firewalld
+  systemd: 
+    state: started 
+    name: firewalld
+    enabled: True
+
+# move to separate role
+#- name: Install docker
+#  yum:
+#    name: docker-{{ docker_version }}
+#    state: present
+
+- name: Install Gluster Requirements
+  include_tasks: gluster_tasks.yaml
+  when: ('glusterfs' in group_names) or ('glusterfs_registry' in group_names)

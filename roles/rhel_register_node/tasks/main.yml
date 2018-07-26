@@ -1,0 +1,73 @@
+---
+- name: Check if secrets.yml exists
+  stat: path="{{ playbook_dir }}/vars/secrets.yml"
+  register: import_secrets_from_vars
+  delegate_to: localhost
+  run_once: "True"
+  ignore_errors: "True"
+
+- include_vars: "{{ playbook_dir }}/vars/secrets.yml"
+  tags: register_system
+  when: import_secrets_from_vars.stat.exists == True
+  delegate_to: localhost
+  run_once: "True"
+  ignore_errors: "True"
+
+- name: Backwards Compability to avoid failure
+  include_tasks: backwards_compability.yml
+  tags: register_system
+
+- name: Setup Satellite prerequirements
+  include_tasks: satellite-prereqs.yml
+  when: redhat_satellite_fqdn is defined
+  tags: register_system
+
+- name: If we are running in AWS, do some cleanup
+  include_tasks: aws-cleanup.yml
+  become: "True"
+  when: ansible_bios_version | search("amazon")
+  tags: register_system
+
+- name: Register system with Red Hat using username / password and a Subscription Pool ID
+  become: "True"
+  when:
+    - ansible_distribution == 'RedHat'
+    - redhat_username is defined
+    - redhat_password is defined
+    - redhat_pool_ids is defined
+    - redhat_activationkey is not defined
+    - redhat_organization_id is not defined
+  redhat_subscription:
+    force_register: false
+    state: present
+    username: "{{ redhat_username }}"
+    password: "{{ redhat_password }}"
+    pool_ids: "{{ redhat_pool_ids }}"
+  tags: register_system
+  register: register_system
+  retries: 3
+  delay: 3
+  register: result
+  until: result | success
+
+- name: Register system with Red Hat using organization name and activation key
+  become: "True"
+  when:
+    - ansible_distribution == 'RedHat'
+    - redhat_activationkey is defined
+    - redhat_organization_id is defined
+  redhat_subscription:
+    state: present
+    autosubscribe: true
+    activationkey: "{{ redhat_activationkey }}"
+    org_id: "{{ redhat_organization_id }}"
+  tags: register_system
+  register: register_system
+
+- name: Enable base RHEL 7 Repository
+  become: "True"
+  when:
+    - ansible_distribution == 'RedHat'
+    - register_system|changed
+  shell: subscription-manager repos --disable '*' && subscription-manager repos --enable rhel-7-server-rpms
+  tags: register_system

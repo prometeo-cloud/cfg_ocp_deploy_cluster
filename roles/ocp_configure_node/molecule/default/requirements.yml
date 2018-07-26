@@ -1,0 +1,4 @@
+---
+- name: rhel_register_node
+  src: https://github.com/prometeo-cloud/rhel_register_node
+

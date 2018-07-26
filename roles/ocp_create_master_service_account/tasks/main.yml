@@ -1,0 +1,30 @@
+---
+# tasks file for ocp_create_master_service_account
+
+- name: Check if SA account exists
+  shell: "PATH=$PATH:/usr/local/bin oc describe sa {{ sa_name|lower }} -n {{ project }}"
+  register: sa_exists
+  ignore_errors: yes
+  changed_when: False
+
+- name: Create SA account
+  shell: "PATH=$PATH:/usr/local/bin oc create sa {{ sa_name|lower }} -n {{ project }}"
+  when: sa_exists.rc != 0
+
+- name: Give role to account
+  shell: "PATH=$PATH:/usr/local/bin oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:{{ project }}:{{ sa_name|lower }}"
+  when: sa_exists.rc != 0
+
+- name: Save access token to root directory
+  shell: "PATH=$PATH:/usr/local/bin oc sa get-token {{ sa_name|lower }} -n {{ project }} > /root/{{ project }}_{{ sa_name|lower }}_token"
+  when: sa_exists.rc != 0
+
+- name: Grab token contents
+  slurp:
+    src: "/root/{{ project }}_{{ sa_name|lower }}_token"
+  register: token
+
+- name: save access token as a fact
+  set_fact:
+    automator_token: "{{ token['content']|b64decode }}"
+

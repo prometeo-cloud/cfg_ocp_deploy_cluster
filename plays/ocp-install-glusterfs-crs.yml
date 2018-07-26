@@ -1,0 +1,36 @@
+---
+# This playbook installs CRS on external nodes (amos_glusterfs) group and later configures openshift to be full CRS configuration
+# it does it by deploying heketi on OCP and hooking it to external cluster
+# Pre-reqs:
+# CRS nodes ready, and controller node can ssh to them
+
+- name: Open firewall ports 
+  hosts: amos_glusterfs
+  roles:
+    - firewalld
+    - glusterfs-crs
+
+- name: Install glusterfs CRS
+  hosts: all:!controller:!bastion
+  tasks:
+     - set_fact:
+        # CRS defaults are:
+        # openshift_storage_glusterfs_heketi_is_native: True
+        # openshift_storage_glusterfs_is_native: False
+        # openshift_storage_glusterfs_registry_is_native: False
+        # openshift_storage_glusterfs_heketi_is_native: True
+        # openshift_storage_glusterfs_registry_heketi_is_native: False
+        # we set those on the inventory with prefix amos_ so we can inject them here. same with host group. This way we avoid running
+        # those plays during main run.
+        openshift_storage_glusterfs_heketi_is_native: "{{ amos_openshift_storage_glusterfs_heketi_is_native }}"
+        openshift_storage_glusterfs_heketi_topology_load: "{{ amos_glusterfs_heketi_topology_load }}"
+        openshift_storage_glusterfs_storageclass: "{{ amos_openshift_storage_glusterfs_storageclass }}"
+        openshift_storage_glusterfs_block_storageclass: "{{ amos_glusterfs_block_storageclass }}"
+     - name: Add glusterfs nodes to glusterfs group for playbooks
+       add_host:
+         name: "{{ item }}"
+         groups: glusterfs
+       with_items:
+       - "{{ groups['amos_glusterfs'] }}"
+
+- import_playbook: /usr/share/ansible/openshift-ansible/playbooks/openshift-glusterfs/config.yml

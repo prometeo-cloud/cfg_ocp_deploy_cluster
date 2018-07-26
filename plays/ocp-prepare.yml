@@ -1,0 +1,15 @@
+---
+- name: Configure notes before anything else
+  hosts: all
+  
+- hosts: all
+  roles:
+  #refactor me as Im doing way too much job!!! + none of this is indenpontent
+   - rhel_register_node
+
+- hosts: all:!bastion:!controller
+  roles:
+  # this doing way too much, refactor me to smallers roles. + none of this is indenpontent
+   - ocp_configure_node
+  # move to MJ roles as its indenponent. Refactor me please too
+   - docker

@@ -1,0 +1,4 @@
+---
+# defaults file for nagios_install_client
+### NRPE variables ###
+nrpe_tcp_port: 5666

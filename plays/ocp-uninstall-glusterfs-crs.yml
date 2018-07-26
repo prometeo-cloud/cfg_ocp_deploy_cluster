@@ -1,0 +1,13 @@
+---
+
+- name: Uninstall glusterfs CRS
+  hosts: all
+  tasks:
+    - name: Add glusterfs nodes to glusterfs group for playbooks
+      add_host:
+        name: "{{ item }}"
+        groups: glusterfs
+      with_items:
+      - "{{ groups['amos_glusterfs'] }}"
+
+- include: /usr/share/ansible/openshift-ansible/playbooks/openshift-glusterfs/uninstall.yml

@@ -1,0 +1,8 @@
+---
+- name: Install ASB
+  hosts: all:!bastion:!controller
+  tasks:
+  # ToDo: Add call to non existing check role to check if pre-reqs are in place (storage is configured)
+     - set_fact:
+         ansible_service_broker_install: " {{ amos_ansible_service_broker_install }}"
+- import_playbook: /usr/share/ansible/openshift-ansible/playbooks/openshift-service-catalog/config.yml

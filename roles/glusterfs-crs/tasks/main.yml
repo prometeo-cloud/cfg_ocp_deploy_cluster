@@ -1,0 +1,60 @@
+---
+# Include variables and define needed variables.
+
+# TODO/FIXME: repo enable should not be here
+- name: enable yum repos
+  shell: subscription-manager repos --enable=rh-gluster-3-for-rhel-7-server-rpms --enable=rh-gluster-3-client-for-rhel-7-server-rpms
+
+- name: Creates directory for gluster
+  file: 
+    path: /var/log/glusterfs/
+    state: directory
+
+- name: Include Redhat variables.
+  include_vars: "RedHat.yml"
+
+# configure gluster-block and glusterfs
+- name: Install Packages
+  yum: name={{ item }}  state=present
+  with_items:
+    - redhat-storage-server
+    - iscsi-initiator-utils 
+    - device-mapper-multipath
+    - gluster-block
+
+- name: Ensure device mapper modules loaded
+  template:
+    src: glusterfs.conf.j2
+    dest: /etc/modules-load.d/glusterfs.conf
+  register: km
+
+- name: load kernel modules
+  systemd:
+    name: systemd-modules-load.service
+    state: restarted
+  when: km is changed
+
+- name: Ensure systemd has right dependencies
+  command: "systemctl add-wants multi-user rpcbind.service"
+
+- name: Template multipath configuration
+  template:
+    dest: "/etc/multipath.conf"
+    src: multipath.conf.j2
+    backup: true
+
+#enable multipath
+- name: Enable and start multipath
+  command: "mpathconf --enable --with_multipathd y"
+
+- name: Ensure GlusterFS is started and enabled at boot.
+  service: 
+    name: "{{ item }}"
+    state: started 
+    enabled: yes
+  with_items:
+  - "{{ glusterfs_daemon }}"
+  - multipathd
+  - rpcbind
+  - iscsid
+  - gluster-blockd

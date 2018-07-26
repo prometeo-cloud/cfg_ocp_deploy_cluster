@@ -1,0 +1,52 @@
+---
+# vars file for ocp_configure_node
+#I am version specific and I should be controlled in inventory
+repos_to_enable:
+  - rhel-7-server-rpms
+  - rhel-7-server-extras-rpms
+  - rhel-7-server-ose-3.9-rpms
+  - rhel-7-fast-datapath-rpms
+
+gluster_repos:
+  - rh-gluster-3-for-rhel-7-server-rpms
+  - rh-gluster-3-client-for-rhel-7-server-rpms
+
+gluster_packages:
+  - heketi-client
+  - cns-deploy
+  - glusterfs-fuse
+
+#I am version specific and I should be controlled in inventory
+packages_to_install:
+  - wget
+  - git
+  - net-tools
+  - bind-utils
+  - iptables-services
+  - bridge-utils
+  - bash-completion
+  - kexec-tools
+  - sos
+  - psacct
+  - python-passlib
+  - firewalld
+  - python-firewall
+
+#I am version specific and I should be controlled in inventory
+docker_version: 1.13.1
+
+aws_yum_plugins_to_disable:
+  - amazon-id
+  - rhui-lb
+
+aws_yum_plugins_to_enable:
+  - product-id
+  - search-disabled-repos
+  - subscription-manager
+  
+aws_rhui_repofiles:
+  - /etc/yum.repos.d/redhat-rhui-client-config.repo
+  - /etc/yum.repos.d/redhat-rhui.repo
+  - /etc/yum.repos.d/rhui-load-balancers.conf
+  
+  

@@ -1,1 +1,6 @@
 .idea/
+.vscode/
+notes/*
+openshift-ansible
+inventories/dev/
+inventories/prod/
